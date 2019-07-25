@@ -7,14 +7,26 @@ import 'semantic-ui-css/semantic.min.css'
 import Home from './components/Home';
 import NavigationBar from './components/NavigationBar'
 import TextEditor from './components/TextEditor';
+import { EditorState } from 'draft-js';
 
 class App extends Component {
   constructor() {
     super();
 
+    this.state = {
+      editorState: EditorState.createEmpty(),
+    }
+
+    this.onEditorStateChange = this.onEditorStateChange.bind(this)
+    
   }
 
-  
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -24,8 +36,9 @@ class App extends Component {
         )} />
         <Route exact path='/wysiwyg' render={() => (
           <TextEditor
-            editorState={null}
-            onEditorStateChange={null}/>
+            editorState={this.state.editorState}
+            onEditorStateChange={this.onEditorStateChange}
+            />
         )} />
       </div>
     );
